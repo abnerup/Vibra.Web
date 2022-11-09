@@ -13,6 +13,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(20));
 
 var app = builder.Build();
 

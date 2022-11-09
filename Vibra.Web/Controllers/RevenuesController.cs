@@ -48,7 +48,7 @@ namespace Vibra.Web.Controllers
         // GET: Revenues/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -66,7 +66,7 @@ namespace Vibra.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", revenue.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName", revenue.CustomerId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", revenue.UserId);
             return View(revenue);
         }
@@ -84,7 +84,7 @@ namespace Vibra.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", revenue.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName", revenue.CustomerId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", revenue.UserId);
             return View(revenue);
         }
@@ -121,7 +121,7 @@ namespace Vibra.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", revenue.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName", revenue.CustomerId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", revenue.UserId);
             return View(revenue);
         }

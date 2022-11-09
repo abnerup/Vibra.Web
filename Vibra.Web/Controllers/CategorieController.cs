@@ -14,13 +14,9 @@ namespace Vibra.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-    
-
         public CategorieController(ApplicationDbContext context)
         {
             _context = context;
-
-            
         }
 
         // GET: Categorie

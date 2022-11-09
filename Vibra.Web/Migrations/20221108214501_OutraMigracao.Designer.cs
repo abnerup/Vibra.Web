@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vibra.Web.Areas.Identity.Data;
 
@@ -11,9 +12,10 @@ using Vibra.Web.Areas.Identity.Data;
 namespace Vibra.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221108214501_OutraMigracao")]
+    partial class OutraMigracao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,11 +246,11 @@ namespace Vibra.Web.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -271,19 +273,19 @@ namespace Vibra.Web.Migrations
 
                     b.Property<string>("Cnpj")
                         .IsRequired()
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("CommercialName")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<string>("LegalName")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("commercialName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("legalName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -301,12 +303,12 @@ namespace Vibra.Web.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("ActualDate")
-                        .HasColumnType("datetime2(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<int>("CategorieId")
+                    b.Property<int?>("CategorieId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CustomerId")
@@ -314,10 +316,10 @@ namespace Vibra.Web.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -343,7 +345,7 @@ namespace Vibra.Web.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("ActualDate")
-                        .HasColumnType("datetime2(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(5,2)");
@@ -353,10 +355,10 @@ namespace Vibra.Web.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -448,9 +450,7 @@ namespace Vibra.Web.Migrations
                 {
                     b.HasOne("Vibra.Web.Areas.Identity.Data.Categorie", "Categorie")
                         .WithMany()
-                        .HasForeignKey("CategorieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategorieId");
 
                     b.HasOne("Vibra.Web.Areas.Identity.Data.Customer", "Customer")
                         .WithMany()

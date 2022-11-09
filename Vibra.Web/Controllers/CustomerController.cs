@@ -59,7 +59,7 @@ namespace Vibra.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,commercialName,legalName,Cnpj,UserId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,CommercialName,LegalName,Cnpj,UserId")] Customer customer)
         {
             var user = await _context.Users.FirstOrDefaultAsync(d => d.Email == User.Identity.Name);
             customer.UserId = user.Id;
@@ -91,7 +91,7 @@ namespace Vibra.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,commercialName,legalName,Cnpj,UserId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CommercialName,LegalName,Cnpj,UserId")] Customer customer)
         {
             if (id != customer.Id)
             {

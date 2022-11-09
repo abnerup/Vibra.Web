@@ -1,30 +1,47 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Vibra.Web.Areas.Identity.Data
 {
     public class Expense
     {
+        [Key]
         public int Id { get; set; }
 
+        [Required]
+        [Column(TypeName = "varchar(200)")]
         public string Description { get; set; } = string.Empty;
-
+        
+        [Required]
+        [Column(TypeName = "decimal(5,2)")]
         public decimal Amount { get; set; }
 
+        [Required]
+        [Column(TypeName = "datetime2(7)")]
         public DateTime ActualDate { get; set; }
 
+        [Required]
+        [Column(TypeName = "datetime2(7)")]
         public DateTime TransactionDate { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public ApplicationUser? User { get; set; }
 
+        [Required]
+        [Column(TypeName = "nvarchar(450)")]
         public string UserId { get; set; }
 
         public Customer? Customer { get; set; }
 
+        [Column(TypeName = "int")]
         public int? CustomerId { get; set; }
 
         public Categorie? Categorie { get; set; }
 
-        public int? CategorieId { get; set; }
+        [Required]
+        [Column(TypeName = "int")]
+        public int CategorieId { get; set; }
 
     }
 }
