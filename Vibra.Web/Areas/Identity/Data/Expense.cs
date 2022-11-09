@@ -15,15 +15,17 @@ namespace Vibra.Web.Areas.Identity.Data
         public string Description { get; set; } = string.Empty;
         
         [Required]
-        [Column(TypeName = "decimal(5,2)")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal Amount { get; set; }
 
         [Required]
         [Column(TypeName = "datetime2(7)")]
+        [Display(Name = "Date of occurrence")]
         public DateTime ActualDate { get; set; }
 
         [Required]
         [Column(TypeName = "datetime2(7)")]
+        [Display(Name = "Competency date")]
         public DateTime TransactionDate { get; set; }
 
         public ApplicationUser? User { get; set; }

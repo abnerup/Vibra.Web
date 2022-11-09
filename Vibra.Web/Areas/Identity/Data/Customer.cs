@@ -12,10 +12,12 @@ namespace Vibra.Web.Areas.Identity.Data
 
         [Required]
         [Column(TypeName = "varchar(200)")]
+        [Display(Name = "Comercial name")]
         public string CommercialName { get; set; } = string.Empty;
 
         [Required]
         [Column(TypeName = "varchar(200)")]
+        [Display(Name = "Legal name")]
         public string LegalName { get; set; } = string.Empty;
 
 

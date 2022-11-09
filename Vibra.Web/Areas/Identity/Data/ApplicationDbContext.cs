@@ -40,7 +40,7 @@ public class ExpenseEntityConfiguration : IEntityTypeConfiguration<Expense>
 {
     public void Configure(EntityTypeBuilder<Expense> builder)
     {
-        builder.Property(d => d.Amount).HasColumnType("decimal(5 , 2)");
+        builder.Property(d => d.Amount).HasColumnType("decimal(18, 2)");
         
     }
 }
@@ -49,7 +49,7 @@ public class RevenueEntityConfiguration : IEntityTypeConfiguration<Revenue>
 {
     public void Configure(EntityTypeBuilder<Revenue> builder)
     {
-        builder.Property(d => d.Amount).HasColumnType("decimal(5 , 2)");
+        builder.Property(d => d.Amount).HasColumnType("decimal(18, 2)");
     }
 }
 
