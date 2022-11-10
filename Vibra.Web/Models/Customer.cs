@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Vibra.Web.Areas.Identity.Data
+namespace Vibra.Web.Models
 {
-    public class Customer 
+    public class Customer
     {
         [Key]
         public int Id { get; set; }

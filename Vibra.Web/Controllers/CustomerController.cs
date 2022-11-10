@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Vibra.Web.Areas.Identity.Data;
 
 namespace Vibra.Web.Controllers
 {
@@ -13,11 +7,14 @@ namespace Vibra.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-     
-        public CustomerController(ApplicationDbContext context)
+        private readonly IHttpContextAccessor _session;
+
+        public string UserId { get { return _session.HttpContext.Session.GetString("UserId"); } }
+
+        public CustomerController(ApplicationDbContext context, IHttpContextAccessor session)
         {
             _context = context;
-         
+            _session = session;
         }
 
         // GET: Customer
@@ -82,7 +79,7 @@ namespace Vibra.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", customer.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users.Where(d => d.Id == UserId), "Id", "Id", customer.UserId);
             return View(customer);
         }
 

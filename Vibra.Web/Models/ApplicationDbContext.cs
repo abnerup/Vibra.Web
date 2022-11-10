@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Vibra.Web.Areas.Identity.Data;
+namespace Vibra.Web.Models;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
@@ -41,7 +39,7 @@ public class ExpenseEntityConfiguration : IEntityTypeConfiguration<Expense>
     public void Configure(EntityTypeBuilder<Expense> builder)
     {
         builder.Property(d => d.Amount).HasColumnType("decimal(18, 2)");
-        
+
     }
 }
 

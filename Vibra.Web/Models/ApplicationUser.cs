@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Vibra.Web.Areas.Identity.Data
+namespace Vibra.Web.Models
 {
-    public class ApplicationUser:IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; } = string.Empty;
 
         public string LastName { get; set; } = string.Empty;
 
     }
+
+     
 }

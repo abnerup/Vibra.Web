@@ -1,4 +1,4 @@
-﻿@model Vibra.Web.Areas.Identity.Data.Expense
+﻿@model Expense
 
 @{
     ViewData["Title"] = "Create";
@@ -36,12 +36,14 @@
                 <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
+                <label asp-for="CustomerId" class="control-label">Customer</label>
                 <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategorieId" class="control-label"></label>
+                <label asp-for="CategorieId" class="control-label">Cotegory</label>
                 <select asp-for="CategorieId" class ="form-control" asp-items="ViewBag.CategorieId"></select>
+                <span asp-validation-for="CategorieId" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding-top:10px">
                 <input type="submit" value="Create" class="btn btn-primary btn-lg" />

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Vibra.Web.Areas.Identity.Data
+namespace Vibra.Web.Models
 {
     public class Categorie
     {
@@ -10,7 +10,7 @@ namespace Vibra.Web.Areas.Identity.Data
 
         [Required]
         [Column(TypeName = "varchar(50)")]
-        [Display(Name ="Name")]
+        [Display(Name = "Name")]
         public string Name { get; set; } = string.Empty;
 
         [Required]

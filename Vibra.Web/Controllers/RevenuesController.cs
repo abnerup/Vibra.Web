@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Vibra.Web.Areas.Identity.Data;
 
 namespace Vibra.Web.Controllers
 {
     public class RevenuesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _session;
 
-        public RevenuesController(ApplicationDbContext context)
+        public string UserId { get { return _session.HttpContext.Session.GetString("UserId"); } }
+
+        public RevenuesController(ApplicationDbContext context, IHttpContextAccessor session)
         {
             _context = context;
+            _session = session;
         }
 
         // GET: Revenues
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Revenues.Include(r => r.Customer).Include(r => r.User);
+            var applicationDbContext = _context.Revenues.Where(d=>d.UserId == UserId).Include(r => r.Customer).Include(r => r.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -48,7 +46,7 @@ namespace Vibra.Web.Controllers
         // GET: Revenues/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName");
+            ViewData["CustomerId"] = new SelectList(_context.Customers.Where(d => d.UserId == UserId), "Id", "CommercialName");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -66,7 +64,7 @@ namespace Vibra.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName", revenue.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers.Where(d => d.UserId == UserId), "Id", "CommercialName", revenue.CustomerId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", revenue.UserId);
             return View(revenue);
         }
@@ -84,7 +82,7 @@ namespace Vibra.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName", revenue.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers.Where(d=>d.UserId == UserId), "Id", "CommercialName", revenue.CustomerId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", revenue.UserId);
             return View(revenue);
         }
@@ -121,7 +119,7 @@ namespace Vibra.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName", revenue.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers.Where(d => d.UserId == UserId), "Id", "CommercialName", revenue.CustomerId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", revenue.UserId);
             return View(revenue);
         }

@@ -1,6 +1,5 @@
-global using Vibra.Web.Areas.Identity.Data;
 global using Microsoft.EntityFrameworkCore;
-
+global using Vibra.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("conn") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
@@ -13,6 +12,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(20));
 
@@ -28,6 +28,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 
 app.UseRouting();
 app.UseAuthentication();;

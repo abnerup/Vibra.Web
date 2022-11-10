@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Vibra.Web.Areas.Identity.Data;
+
 
 namespace Vibra.Web.Controllers
 {
     public class CategorieController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _session;
 
-        public CategorieController(ApplicationDbContext context)
+        public CategorieController(ApplicationDbContext context, IHttpContextAccessor session)
         {
             _context = context;
+            _session = session;
         }
 
         // GET: Categorie
         public async Task<IActionResult> Index()
         {
-            var user = await _context.Users.FirstOrDefaultAsync(d => d.Email == User.Identity.Name);
-            var applicationDbContext = _context.Categories.Where(d=> d.UserId == user.Id);
+            var applicationDbContext = _context.Categories.Where(d=> d.UserId == _session.HttpContext.Session.GetString("UserId"));
             return View(await applicationDbContext.ToListAsync());
         }
 

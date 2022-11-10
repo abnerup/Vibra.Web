@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Vibra.Web.Areas.Identity.Data;
+using Vibra.Web.Models;
 
 namespace Vibra.Web.Areas.Identity.Pages.Account
 {

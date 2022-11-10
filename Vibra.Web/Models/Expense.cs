@@ -1,17 +1,17 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Vibra.Web.Areas.Identity.Data
+namespace Vibra.Web.Models
 {
-    public class Revenue
+    public class Expense
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [Column(TypeName ="varchar(200)")]
+        [Column(TypeName = "varchar(200)")]
         public string Description { get; set; } = string.Empty;
 
         [Required]
@@ -36,9 +36,15 @@ namespace Vibra.Web.Areas.Identity.Data
 
         public Customer? Customer { get; set; }
 
+        [Column(TypeName = "int")]
+        public int? CustomerId { get; set; }
+
+        [Display(Name = "Category")]
+        public Categorie? Categorie { get; set; }
+
         [Required]
         [Column(TypeName = "int")]
-        public int CustomerId { get; set; }
+        public int CategorieId { get; set; }
 
     }
 }

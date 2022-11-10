@@ -1,20 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Vibra.Web.Models;
 
 namespace Vibra.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IHttpContextAccessor _httpContext;
+
+        public HomeController(ApplicationDbContext context, IHttpContextAccessor httpContext)
         {
-            _logger = logger;
+            _context = context;
+            _httpContext = httpContext;
         }
 
         public IActionResult Index()
         {
+            var user =  _context.Users.FirstOrDefault(d => d.Email == User.Identity.Name);
+            _httpContext.HttpContext.Session.SetString("UserId", user.Id);
             return View();
         }
 

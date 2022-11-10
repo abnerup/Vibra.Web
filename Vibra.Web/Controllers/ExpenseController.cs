@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Vibra.Web.Controllers
 {
@@ -7,15 +8,21 @@ namespace Vibra.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public ExpenseController(ApplicationDbContext context)
+        private readonly IHttpContextAccessor _session;
+
+        public string UserId { get { return _session.HttpContext.Session.GetString("UserId"); } }
+
+
+        public ExpenseController(ApplicationDbContext context, IHttpContextAccessor session)
         {
             _context = context;
+            _session = session;
         }
 
         // GET: Expense
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Expenses.Include(e => e.Categorie).Include(e => e.Customer).Include(e => e.User);
+            var applicationDbContext = _context.Expenses.Where(d=>d.UserId == UserId).Include(e => e.Categorie).Include(e => e.Customer).Include(e => e.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -43,19 +50,19 @@ namespace Vibra.Web.Controllers
         // GET: Expense/Create
         public IActionResult Create()
         {
-            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["CategorieId"] = new SelectList(_context.Categories.Where(d => d.UserId == UserId), "Id", "Name");
 
             var list = new List<SelectListItem>();
 
             list.Add(new SelectListItem {Text = "",Value=""});
 
-            foreach (var item in _context.Customers)
+            foreach (var item in _context.Customers.Where(d => d.UserId == UserId))
             {
                 list.Add(new SelectListItem { Text = item.CommercialName, Value = item.Id.ToString()});
             }
            
             ViewData["CustomerId"] = list;
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Users.Where(d => d.Id ==UserId), "Id", "Id");
             return View();
         }
 
@@ -72,16 +79,26 @@ namespace Vibra.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var list = new List<SelectListItem>();
 
-            list.Add(new SelectListItem { Text = "", Value = "" });
 
-            foreach (var item in _context.Customers)
+            if (expense.CustomerId.HasValue)
             {
-                list.Add(new SelectListItem { Text = item.CommercialName, Value = item.Id.ToString() });
+                ViewData["CustomerId"] = new SelectList(_context.Customers.Where(d => d.UserId == UserId), "Id", "CommercialName", expense.CustomerId);
             }
-            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Name", expense.CategorieId);
-            ViewData["CustomerId"] = new SelectList(list, "Id", "CommercialName", expense.CustomerId);
+            else
+            {
+                var list = new List<SelectListItem>();
+
+                list.Add(new SelectListItem { Text = "", Value = "" });
+
+                foreach (var item in _context.Customers.Where(d => d.UserId == UserId))
+                {
+                    list.Add(new SelectListItem { Text = item.CommercialName, Value = item.Id.ToString() });
+                }
+
+                ViewData["CustomerId"] = list;
+            }
+            ViewData["CategorieId"] = new SelectList(_context.Categories.Where(d => d.UserId == UserId), "Id", "Name", expense.CategorieId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", expense.UserId);
             return View(expense);
         }
@@ -102,7 +119,7 @@ namespace Vibra.Web.Controllers
 
             if (expense.CustomerId.HasValue)
             {
-                ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "CommercialName", expense.CustomerId);
+                ViewData["CustomerId"] = new SelectList(_context.Customers.Where(d => d.UserId == UserId), "Id", "CommercialName", expense.CustomerId);
             }
             else 
             {
@@ -110,7 +127,7 @@ namespace Vibra.Web.Controllers
 
                 list.Add(new SelectListItem { Text = "", Value = "" });
 
-                foreach (var item in _context.Customers)
+                foreach (var item in _context.Customers.Where(d => d.UserId == UserId))
                 {
                     list.Add(new SelectListItem { Text = item.CommercialName, Value = item.Id.ToString() });
                 }
@@ -118,8 +135,8 @@ namespace Vibra.Web.Controllers
                 ViewData["CustomerId"] = list;
             }
             
-            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Name", expense.CategorieId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", expense.UserId);
+            ViewData["CategorieId"] = new SelectList(_context.Categories.Where(d => d.UserId == UserId), "Id", "Name", expense.CategorieId);
+            ViewData["UserId"] = new SelectList(_context.Users.Where(d => d.Id == UserId), "Id", "Id", expense.UserId);
             return View(expense);
         }
 
@@ -156,17 +173,26 @@ namespace Vibra.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var list = new List<SelectListItem>();
-
-            list.Add(new SelectListItem { Text = "", Value = "" });
-
-            foreach (var item in _context.Customers)
+            if (expense.CustomerId.HasValue)
             {
-                list.Add(new SelectListItem { Text = item.CommercialName, Value = item.Id.ToString() });
+                ViewData["CustomerId"] = new SelectList(_context.Customers.Where(d => d.UserId == UserId), "Id", "CommercialName", expense.CustomerId);
             }
-            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Name", expense.CategorieId);
-            ViewData["CustomerId"] = new SelectList(list, "Id", "CommercialName", expense.CustomerId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", expense.UserId);
+            else
+            {
+                var list = new List<SelectListItem>();
+
+                list.Add(new SelectListItem { Text = "", Value = "" });
+
+                foreach (var item in _context.Customers.Where(d => d.UserId == UserId))
+                {
+                    list.Add(new SelectListItem { Text = item.CommercialName, Value = item.Id.ToString() });
+                }
+
+                ViewData["CustomerId"] = list;
+            }
+
+            ViewData["CategorieId"] = new SelectList(_context.Categories.Where(d => d.UserId == UserId), "Id", "Name", expense.CategorieId);
+            ViewData["UserId"] = new SelectList(_context.Users.Where(d => d.Id == UserId), "Id", "Id", expense.UserId);
             return View(expense);
         }
 

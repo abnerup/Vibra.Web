@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Vibra.Web.Areas.Identity.Data;
+using Vibra.Web.Models;
 
 #nullable disable
 
@@ -159,7 +159,7 @@ namespace Vibra.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.ApplicationUser", b =>
+            modelBuilder.Entity("Vibra.Web.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -234,7 +234,7 @@ namespace Vibra.Web.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Categorie", b =>
+            modelBuilder.Entity("Vibra.Web.Models.Categorie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,7 +261,7 @@ namespace Vibra.Web.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Customer", b =>
+            modelBuilder.Entity("Vibra.Web.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -292,7 +292,7 @@ namespace Vibra.Web.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Expense", b =>
+            modelBuilder.Entity("Vibra.Web.Models.Expense", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -334,7 +334,7 @@ namespace Vibra.Web.Migrations
                     b.ToTable("Expenses");
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Revenue", b =>
+            modelBuilder.Entity("Vibra.Web.Models.Revenue", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -382,7 +382,7 @@ namespace Vibra.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", null)
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -391,7 +391,7 @@ namespace Vibra.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", null)
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -406,7 +406,7 @@ namespace Vibra.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", null)
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -415,27 +415,16 @@ namespace Vibra.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", null)
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Categorie", b =>
+            modelBuilder.Entity("Vibra.Web.Models.Categorie", b =>
                 {
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Customer", b =>
-                {
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", "User")
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -444,19 +433,30 @@ namespace Vibra.Web.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Expense", b =>
+            modelBuilder.Entity("Vibra.Web.Models.Customer", b =>
                 {
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.Categorie", "Categorie")
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Vibra.Web.Models.Expense", b =>
+                {
+                    b.HasOne("Vibra.Web.Models.Categorie", "Categorie")
                         .WithMany()
                         .HasForeignKey("CategorieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.Customer", "Customer")
+                    b.HasOne("Vibra.Web.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", "User")
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -469,15 +469,15 @@ namespace Vibra.Web.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Vibra.Web.Areas.Identity.Data.Revenue", b =>
+            modelBuilder.Entity("Vibra.Web.Models.Revenue", b =>
                 {
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.Customer", "Customer")
+                    b.HasOne("Vibra.Web.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Vibra.Web.Areas.Identity.Data.ApplicationUser", "User")
+                    b.HasOne("Vibra.Web.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
