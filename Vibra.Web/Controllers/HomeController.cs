@@ -18,7 +18,11 @@ namespace Vibra.Web.Controllers
         public IActionResult Index()
         {
             var user =  _context.Users.FirstOrDefault(d => d.Email == User.Identity.Name);
-            _httpContext.HttpContext.Session.SetString("UserId", user.Id);
+            if (user != null) 
+            {
+                _httpContext.HttpContext.Session.SetString("UserId", user.Id);
+            }
+            
             return View();
         }
 

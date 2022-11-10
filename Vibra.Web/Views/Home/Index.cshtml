@@ -1,8 +1,23 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Vibra.Web.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bem vindo @UserManager.GetUserName(User)!</h1>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <p>É necessário cadastrar  empresas e categorias primeiramente.</p>
+        <p>Depois disso você poderá lançar despesas e receitas normalmente.</p>
+    }
+    else
+    {
+        <p>Faça login ou registre um novo usuário para acessar o sistema.</p>
+    }
+
 </div>
